@@ -36,7 +36,7 @@ export const GrammarianDashboard: React.FC = () => {
     if (activeMeeting) {
       loadRecords(activeMeeting.id);
     }
-  }, [activeMeeting?.id]);
+  }, [activeMeeting, loadRecords]);
 
   const wodRecords = records.filter((r) => r.type === 'wod');
   const idiomRecords = records.filter((r) => r.type === 'idiom');

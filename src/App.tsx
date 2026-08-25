@@ -49,7 +49,7 @@ export function App() {
   useEffect(() => {
     loadSettings();
     initialize();
-  }, []);
+  }, [loadSettings, initialize]);
 
   // Reload child stores whenever active meeting changes
   useEffect(() => {
@@ -59,7 +59,7 @@ export function App() {
       loadGrammarianRecords(activeMeeting.id);
       loadTrivia(activeMeeting.id);
     }
-  }, [activeMeeting?.id]);
+  }, [activeMeeting, loadTimerRecords, loadAhRecords, loadGrammarianRecords, loadTrivia]);
 
   const handleNewMeeting = async () => {
     const today = new Date().toISOString().split('T')[0];

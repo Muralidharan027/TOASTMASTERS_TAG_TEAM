@@ -58,7 +58,7 @@ export const TriviaDashboard: React.FC = () => {
     if (activeMeeting) {
       loadTrivia(activeMeeting.id);
     }
-  }, [activeMeeting?.id]);
+  }, [activeMeeting, loadTrivia]);
 
   const handleOpenAddQuestion = () => {
     setEditingQuestionId(null);

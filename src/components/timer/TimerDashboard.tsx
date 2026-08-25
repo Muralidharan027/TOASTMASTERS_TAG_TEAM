@@ -53,7 +53,7 @@ export const TimerDashboard: React.FC = () => {
     if (activeSpeaker && activeMeeting) {
       setActiveSpeaker(activeSpeaker.id, activeMeeting.id);
     }
-  }, [activeSpeaker?.id, activeMeeting?.id]);
+  }, [activeSpeaker, activeMeeting, setActiveSpeaker]);
 
   // Desktop keyboard shortcuts (Space to start/pause, R to reset)
   useEffect(() => {

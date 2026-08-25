@@ -56,7 +56,7 @@ export const AhCounterDashboard: React.FC = () => {
     if (activeMeeting) {
       loadRecords(activeMeeting.id);
     }
-  }, [activeMeeting?.id]);
+  }, [activeMeeting, loadRecords]);
 
   const activeRec = activeSpeaker ? getRecordForSpeaker(activeSpeaker.id) : null;
 

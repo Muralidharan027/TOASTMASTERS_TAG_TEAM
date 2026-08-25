@@ -7,6 +7,10 @@ import {
   Trash2,
   Plus,
   Command,
+  Sparkles,
+  Eye,
+  EyeOff,
+  ExternalLink,
 } from 'lucide-react';
 import { useSettingsStore } from '../../store/useSettingsStore';
 import { useMeetingStore } from '../../store/useMeetingStore';
@@ -25,12 +29,21 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
 
   const [newFillerWord, setNewFillerWord] = useState('');
   const [importStatus, setImportStatus] = useState<string | null>(null);
+  const [showApiKey, setShowApiKey] = useState(false);
+  const [apiKeyInput, setApiKeyInput] = useState(settings.geminiApiKey || '');
+  const [apiKeySaved, setApiKeySaved] = useState(false);
 
   const handleAddFiller = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newFillerWord.trim()) return;
     addCustomFillerWord(newFillerWord.trim());
     setNewFillerWord('');
+  };
+
+  const handleSaveApiKey = () => {
+    updateSettings({ geminiApiKey: apiKeyInput.trim() });
+    setApiKeySaved(true);
+    setTimeout(() => setApiKeySaved(false), 2000);
   };
 
   const handleExportBackup = async () => {
@@ -188,7 +201,59 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
           </div>
         </div>
 
-        {/* 5. Data Export & Backup */}
+        {/* 5. Fetch Settings — Gemini API Key */}
+        <div className="space-y-3 pt-2 border-t border-slate-100 dark:border-slate-800">
+          <label className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+            <Sparkles className="w-3.5 h-3.5 text-violet-500" />
+            Fetch from Brochure — AI Settings
+          </label>
+          <p className="text-xs text-slate-500">
+            Enter your Gemini API key to enable the Fetch feature.
+            Your key is stored locally on this device only.
+          </p>
+          <div className="flex gap-2">
+            <div className="relative flex-1">
+              <input
+                type={showApiKey ? 'text' : 'password'}
+                placeholder="AIza..."
+                value={apiKeyInput}
+                onChange={(e) => setApiKeyInput(e.target.value)}
+                className="w-full px-3 py-2 pr-9 rounded-xl text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 font-mono text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-violet-500"
+              />
+              <button
+                type="button"
+                onClick={() => setShowApiKey((v) => !v)}
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 cursor-pointer"
+              >
+                {showApiKey ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+              </button>
+            </div>
+            <Button
+              size="sm"
+              variant="primary"
+              onClick={handleSaveApiKey}
+              className="shrink-0 bg-violet-600 hover:bg-violet-700 border-violet-600"
+            >
+              {apiKeySaved ? '✓ Saved' : 'Save Key'}
+            </Button>
+          </div>
+          <a
+            href="https://aistudio.google.com/app/apikey"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 text-xs text-violet-600 dark:text-violet-400 font-semibold hover:underline"
+          >
+            <ExternalLink className="w-3 h-3" />
+            Get a free Gemini API key at Google AI Studio
+          </a>
+          {settings.geminiApiKey && (
+            <p className="text-xs text-emerald-600 dark:text-emerald-400 font-semibold">
+              ✓ API key configured — Fetch from Brochure is enabled.
+            </p>
+          )}
+        </div>
+
+        {/* 6. Data Export & Backup */}
         <div className="space-y-3 pt-2 border-t border-slate-100 dark:border-slate-800">
           <label className="text-xs font-bold uppercase tracking-wider text-slate-400">
             Data Storage & Backup (Offline-First)

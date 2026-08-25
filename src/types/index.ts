@@ -178,4 +178,46 @@ export interface AppSettings {
   customFillerWords: string[];
   ahCounterLayout: 'standard' | 'minimal';
   defaultReportStyle: ReportTemplateStyle;
+  geminiApiKey?: string;
+}
+
+// ─── Fetch / Brochure Extraction Types ────────────────────────────────────────
+
+export interface FetchedAgendaItem {
+  startTime?: string;
+  duration?: string;            // raw e.g. "5–6–7"
+  minimumTime?: number;         // parsed in seconds
+  targetTime?: number;          // parsed in seconds
+  maximumTime?: number;         // parsed in seconds
+  role: string;
+  person?: string;
+  session?: string;
+  confidence: 'high' | 'review';
+}
+
+export interface FetchedRoleAssignment {
+  role: string;
+  tagTeamRole?: TagRoleType;    // mapped if applicable
+  person: string;
+  confidence: 'high' | 'review';
+}
+
+export interface FetchedMeetingData {
+  meetingNumber?: string;
+  date?: string;                // ISO: YYYY-MM-DD
+  startTime?: string;
+  endTime?: string;
+  meetingType?: MeetingType;
+  theme?: string;
+  wordOfDay?: string;
+  wordMeaning?: string;
+  idiom?: string;
+  idiomMeaning?: string;
+  venue?: string;
+  clubName?: string;
+  roles: FetchedRoleAssignment[];
+  agenda: FetchedAgendaItem[];
+  footerContacts?: string[];
+  overallConfidence: 'high' | 'partial' | 'low';
+  reviewFlags: string[];
 }

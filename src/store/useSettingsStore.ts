@@ -11,6 +11,7 @@ const defaultSettings: AppSettings = {
   customFillerWords: ['Right', 'Okay', 'Kind of', 'Sort of', 'I think'],
   ahCounterLayout: 'standard',
   defaultReportStyle: 'toastmasters',
+  geminiApiKey: '',
 };
 
 interface SettingsState {

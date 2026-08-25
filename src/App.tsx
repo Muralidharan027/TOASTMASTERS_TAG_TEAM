@@ -13,6 +13,7 @@ import { RoleTabs } from './components/common/RoleTabs';
 import { Modal } from './components/common/Modal';
 import { HomeScreen } from './components/home/HomeScreen';
 import { MeetingSetup } from './components/meeting/MeetingSetup';
+import { CreateMeetingScreen } from './components/meeting/CreateMeetingScreen';
 import { TimerDashboard } from './components/timer/TimerDashboard';
 import { AhCounterDashboard } from './components/ahcounter/AhCounterDashboard';
 import { GrammarianDashboard } from './components/grammarian/GrammarianDashboard';
@@ -61,7 +62,13 @@ export function App() {
     }
   }, [activeMeeting, loadTimerRecords, loadAhRecords, loadGrammarianRecords, loadTrivia]);
 
-  const handleNewMeeting = async () => {
+  // Create meeting via brochure fetch → go to CreateMeetingScreen
+  const handleNewMeetingClick = () => {
+    setActiveTab('createMeeting');
+  };
+
+  // Manual entry: create a blank meeting immediately and go to meeting setup
+  const handleManualEntry = async () => {
     const today = new Date().toISOString().split('T')[0];
     await createMeeting(
       {
@@ -172,7 +179,7 @@ export function App() {
       <main className="flex-1 pb-24 xl:pb-12">
         {activeTab === 'home' && (
           <HomeScreen
-            onNewMeetingClick={handleNewMeeting}
+            onNewMeetingClick={handleNewMeetingClick}
             onOpenMeeting={(id) => {
               loadMeeting(id);
               setActiveTab('meeting');
@@ -181,6 +188,17 @@ export function App() {
               loadMeeting(id);
               setActiveTab('report');
             }}
+          />
+        )}
+
+        {activeTab === 'createMeeting' && (
+          <CreateMeetingScreen
+            onMeetingCreated={(id) => {
+              loadMeeting(id);
+              setActiveTab('meeting');
+            }}
+            onManualEntry={handleManualEntry}
+            onOpenSettings={() => setIsSettingsOpen(true)}
           />
         )}
 
